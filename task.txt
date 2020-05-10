@@ -1,0 +1,17 @@
+1. Every product belongs to a category
+2. Customers can buy products
+3.suppliers will sell products
+
+*Noun dhundneka utne classes bante hai*
+
+Er ma jitne table 
+utne class diagram mai classes column in er var in class
+
+
+product liya toh bill mail karta hai
+
+session active hai ki nai
+dependency hai
+helper ke ndr class session
+ek class ek kaam
+
