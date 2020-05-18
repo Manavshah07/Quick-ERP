@@ -14,23 +14,27 @@ if(isset($_POST['add_category']))
                 Util::redirect("manage-category.php");
                 break;
             case ADD_SUCCESS:
-                Session::setSession(ADD_SUCCESS,"Add Category Success!");
+                Session::setSession(ADD_SUCCESS,"Add Category Success");
                 Util::redirect("manage-category.php");
                 break;
             case VALIDATION_ERROR:
                 Session::setSession('validation',"Validation Error");
-                Session::setSession('old',$_POST);// Aray hy toh directly bhej sakte
-                Session::setSession('errors',serialize($di->get('category')->getValidator()->errors()));//obj hy isiliye serialize kar k bheja
+                Session::setSession('old',$_POST);
+                ?>
+                <h2>Session Serial</h2>
+                <?php
+                Session::setSession('errors',serialize($di->get('category')->getValidator()->errors()));//object mai hai ya array hai to text mai store kar sakeee!
                 Util::redirect("add-category.php");
                 break;
         }
-    }
-    else{
-        Session::setSession("csrf","CSRF Error");
-        Util::redirect("manage-category.php");//Need to change this, actually we will be redirecting to some error page indicating Unauthorized access
-        
+    }else{
+        //errorpage 
+        Session::setSession("csrf","CSRF ERROR");
+        Util::redirect("manage-category.php");//Need to change this, actually we be redirecting to some error page indicating Unauthorized access.
+
     }
 }
+
 
 if(isset($_POST['page']))
 {
@@ -42,11 +46,6 @@ if(isset($_POST['page']))
         
         $dependency = 'customer';
     }
-    //&_POST['search']['value']
-    //&_POST['start']
-    //&_POST['length']
-    //&_POST['order']
-    //&_POST['draw']
     // Util::dd($dependency);
     $search_parameter = $_POST['search']['value'] ?? null;
     $order_by = $_POST['order'] ?? null;
@@ -57,14 +56,13 @@ if(isset($_POST['page']))
     $di->get($dependency)->getJSONDataForDataTable($draw,$search_parameter,$order_by,$start,$length);
     
 }
+
 if(isset($_POST['fetch']))
 {
-    //Util::dd($_POST['fetch']);
     if($_POST['fetch'] == 'category')
     {
         $category_id = $_POST['category_id'];
         $result = $di->get('category')->getCategoryByID($category_id,PDO::FETCH_ASSOC);
-        //Util::dd($result[0]);
         echo json_encode($result[0]);
     }
 }
@@ -75,7 +73,6 @@ if(isset($_POST['editCategory']))
         
         $result = $di->get('category')->update($_POST,$_POST['category_id']);
 
-        //Util::dd($_POST['category_id']);
         
         switch($result)
         {
@@ -100,6 +97,34 @@ if(isset($_POST['editCategory']))
         Util::redirect("manage-category.php");//Need to change this, actually we be redirecting to some error page indicating Unauthorized access.
 
     }
+}
+
+if(isset($_POST['deleteCategory']))
+{
+if(Util::verifyCSRFToken($_POST))
+{   
+    // Util::dd($_POST['record_id']);
+    $result = $di->get('category')->delete($_POST['record_id']);
+
+    
+    switch($result)
+    {
+        case DELETE_ERROR:
+            Session::setSession(DELETE_ERROR,"Delete Category Error");
+            Util::redirect("manage-category.php");
+            break;
+            case DELETE_SUCCESS:
+                Session::setSession(DELETE_SUCCESS,"Delete Category Success");
+                Util::redirect("manage-category.php");
+                break;
+    }
+}
+else{
+    //errorpage 
+    Session::setSession("csrf","CSRF ERROR");
+    Util::redirect("manage-category.php");//Need to change this, actually we be redirecting to some error page indicating Unauthorized access.
+
+}
 }
 
 ?>

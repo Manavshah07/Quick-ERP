@@ -26,12 +26,11 @@ var TableDatatables = function() {
             }]
         });
         manageCategoryTable.on('click', '.edit', function(e) {
-            alert("hello");
             var id = $(this).data('id');
-            //console.log(id);
+            console.log(id);
             $("#edit_category_id").val(id);
             $('#edit_category_name').val($(this).data('name'));
-            //Fetching all other values from the database using AJAX add loading them onto their respective fields in the modal
+            //Fetching all other values from the database using AJAX and loading them onto their respective fileds in Modal
             $.ajax({
                 url: baseURL + filePath,
                 method: "POST",
@@ -40,12 +39,20 @@ var TableDatatables = function() {
                     "fetch": "category"
                 },
                 dataType: "json",
-                success: function(data) { //kinda then of promise in ajax js
-                    console.log(data.name);
+                success: function(data) { // kinda then of promise in ajax js
+                    // console.log(data.name);
                     $('#edit_category_name').val(data.name);
                 }
             })
-        })
+
+        });
+
+        manageCategoryTable.on('click', '.delete', function(e) {
+            var id = $(this).data('id');
+            $("#delete_record_id").val(id);
+        });
+
+
         new $.fn.dataTable.Buttons(oTable, {
             buttons: [
                 'copy', 'csv', 'pdf'
@@ -53,19 +60,17 @@ var TableDatatables = function() {
         });
         oTable.buttons().container()
             .appendTo($('#export-buttons'));
+
     }
     return {
-
         //main function to handle all the datatables
 
         init: function() {
             handleCategoryTable();
         }
     }
-}(); //iifee hai ye
+}();
 
 jQuery(document).ready(function() {
     TableDatatables.init();
 });
-
-//Jabhi classes nahi the tabhi fun ke andar fun banate the

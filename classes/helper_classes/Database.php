@@ -1,8 +1,10 @@
 <?php
 class Database{
     private $di;
+    
     private $pdo;
     private $stmt;
+
     private $debug;
     private $host;
     private $username;
@@ -35,7 +37,7 @@ class Database{
         }
         catch(PDOException $e)
         {
-            die($this->debug ? $e->getMessage() : "Error Whule connecting to databaase");
+            die($this->debug ? $e->getMessage() : "Error While connecting to databaase");
         }
     }
     public function query($sql)
@@ -67,8 +69,10 @@ class Database{
 
     public function delete(string $table, $condition)
     {
+        
         $sql = "UPDATE {$table} SET deleted = 1 WHERE {$condition}";
         $this->stmt = $this->pdo->prepare($sql);
+        // Util::dd($sql);
         return $this->stmt->execute();
     }
 
@@ -86,7 +90,7 @@ class Database{
             } 
         }
         $sql = "UPDATE {$table} SET {$columnKeyValue} WHERE {$condition}";
-    
+        
         $this->stmt = $this->pdo->prepare($sql);
         return $this->stmt->execute($data);
     }
@@ -110,7 +114,7 @@ class Database{
     {
         //$data['name'=>'HT'];
         $field = array_keys($data)[0];    
-        $result = $this->readData($table,[],"{$field} = '{$data[$field]}'",PDO::FETCH_ASSOC);
+        $result = $this->readData($table,[],"{$field} = '{$data[$field]}' and deleted=0",PDO::FETCH_ASSOC);
         if(count($result) > 0)
         {
             return true;

@@ -1,3 +1,4 @@
+
 <?php
     require_once __DIR__."/../../helper/init.php";
     $page_title ="Quick ERP | MANAGE CATEGORY";
@@ -65,7 +66,6 @@
         <!-- Begin Page Content -->
         <!-- Page Heading -->
         <div class="container-fluid">
-
                 <!-- Page Heading -->
                 <h1 class="h3 mb-4 text-gray-800">Manage Category</h1>
                 <div class="card shadow mb-4">
@@ -86,7 +86,6 @@
                         </table>
                     </div>
                 </div>
-
             </div>
             <!-- /.container-fluid -->
 
@@ -134,6 +133,44 @@
 <!-- End of edit modal -->
 
       <!-- END OF EDIT MODAL -->
+
+
+
+
+
+     <!-- DELETE MODAL -->
+
+      <!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="deleteModalLabel">Delete Category</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form action="<?= BASEURL;?>helper/routing.php" method="POST">
+              <div class="modal-body">
+                <input type="hidden" name="csrf_token" id="csrf_token" value="<?= Session::getSession('csrf_token');?>">
+                <input type="hidden" name="record_id" id="delete_record_id">
+                <p class="text-muted">Are You sure you want to delete this record?</p>
+              </div>
+                   <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-danger" name="deleteCategory">Deleted Records!</button>
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
+<!-- End of delete modal -->
+
+      <!-- END OF DELETE MODAL -->
+
 
       <!-- Footer -->
       <?php require_once __DIR__."/../includes/footer.php"; ?>
